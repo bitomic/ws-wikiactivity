@@ -3301,6 +3301,7 @@ __metadata:
     "@commitlint/cli": ^17.0.2
     "@commitlint/config-conventional": ^17.0.2
     "@sapphire/pieces": ^3.3.4
+    "@sapphire/utilities": ^3.6.2
     "@types/node": ^16.11.41
     "@typescript-eslint/eslint-plugin": ^5.28.0
     "@typescript-eslint/parser": ^5.28.0

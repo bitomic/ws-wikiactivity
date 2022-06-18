@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@sapphire/pieces": "^3.3.4",
+    "@sapphire/utilities": "^3.6.2",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1",
     "ts-dotenv": "^0.8.3"
