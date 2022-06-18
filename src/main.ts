@@ -1,9 +1,8 @@
-import { env, io, ListenerStore, pino, server } from './lib'
-import path from 'path'
+// import './wikiactivity'
+import { env, io, listeners, pino, server } from './lib'
 
 ( async () => {
-	const store = new ListenerStore().registerPath( path.resolve( __dirname, 'listeners' ) )
-	await store.loadAll()
+	await listeners.loadAll()
 
 	server.listen( env.PORT, () => pino.info( `Listening to port ${ env.PORT }` ) )
 
