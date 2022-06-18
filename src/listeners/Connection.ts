@@ -1,4 +1,4 @@
-import { ApplyOptions, Listener, type ListenerOptions, pino, listeners } from '../lib'
+import { ApplyOptions, Listener, type ListenerOptions, listeners, pino } from '../lib'
 import type { Socket } from 'socket.io'
 
 @ApplyOptions<ListenerOptions>( {
@@ -10,7 +10,7 @@ export class CustomListener extends Listener {
 		socket.emit( 'connection' )
 		pino.info( `Connection: ${ socket.id }` )
 
-		socket.on( 'message', async (event: string, ...args: unknown[]) => {
+		socket.on( 'message', async ( event: string, ...args: unknown[] ) => {
 			const clientListeners = listeners.filter( listener => listener.options.event === event )
 			for ( const listener of clientListeners.values() ) {
 				await listener.run( socket, ...args )

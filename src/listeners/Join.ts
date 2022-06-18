@@ -1,4 +1,4 @@
-import { ApplyOptions, Listener, type ListenerOptions, pino, io } from '../lib'
+import { ApplyOptions, io, Listener, type ListenerOptions, pino } from '../lib'
 import type { Socket } from 'socket.io'
 
 @ApplyOptions<ListenerOptions>( {
