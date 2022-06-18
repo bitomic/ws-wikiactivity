@@ -10,7 +10,7 @@ export class ListenerStore extends Store<Listener> {
 	}
 
 	public override set( key: string, value: Listener ): this {
-		io.on( value.options.event, ( socket: Socket ) => value.run( io, socket ) )
+		io.on( value.options.event, ( socket: Socket ) => value.run( socket ) )
 		return super.set( key, value )
 	}
 }
