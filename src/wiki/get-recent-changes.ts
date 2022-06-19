@@ -17,15 +17,14 @@ export const getRecentChanges = async ( wiki: Required<FandomWiki>, from: number
 
 	const activity = wiki.iterQueryList( {
 		list: 'recentchanges',
-		// @ts-expect-error - blame the typings
 		rcdir: 'newer',
-		rcend: to,
+		rcend: new Date( to ).toISOString(),
 		rclimit: 'max',
 		rcprop: [
 			'comment', 'ids', 'redirect', 'sizes', 'timestamp', 'title', 'user'
 		],
 		rcshow: '!bot',
-		rcstart: from,
+		rcstart: new Date( from ).toISOString(),
 		rctype: [
 			'categorize', 'edit', 'new'
 		]
@@ -35,8 +34,10 @@ export const getRecentChanges = async ( wiki: Required<FandomWiki>, from: number
 			oldRevid: item.old_revid,
 			revid: item.revid,
 			sizediff: item.newlen - item.oldlen,
-			summary: item.comment,
-			timestamp: new Date( item.timestamp ).getTime(),
+			// @ts-expect-error - faulty typings
+			summary: item.comment, // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+			// @ts-expect-error - faulty typings
+			timestamp: new Date( item.timestamp ).getTime(), // eslint-disable-line @typescript-eslint/no-unsafe-argument
 			title: item.title,
 			type: item.type,
 			user: item.user
