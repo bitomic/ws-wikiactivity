@@ -1,6 +1,9 @@
+import { io, pino, redis } from '../lib'
 import { type IWikiActivityData, queue, QUEUE_NAME } from './Queue'
 import { type Job, Worker } from 'bullmq'
-import { pino, redis } from '../lib'
+import { Fandom } from 'mw.js'
+import { getActivity } from '../wiki/get-activity'
+import { sleep } from '@bitomic/utilities'
 
 const DELAY_SECONDS = 20
 
@@ -12,8 +15,22 @@ new Worker(
 		const now = Date.now()
 		const { lastCheck } = job.data
 
-		pino.info( job.data )
-		pino.info( lastCheck )
+		const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
+		pino.info( `Running for the following wikis with last check ${ new Date( lastCheck ).toISOString() }: ${ rooms.join( ', ' ) }` )
+		const fandom = new Fandom()
+		for ( const room of rooms ) {
+			try {
+				const wiki = await fandom.getWiki( room ).load()
+				const activity = await getActivity( wiki, lastCheck, now )
+				for ( const item of activity ) {
+					io.to( room ).emit( 'activity', item )
+					await sleep( 200 )
+				}
+				pino.info( `Emitted ${ activity.length } events in room ${ room }.` )
+			} catch ( e ) {
+				pino.error( `An error had occurred while processing room ${ room }.` )
+			}
+		}
 
 		await queue.add( 'fetch', { lastCheck: now }, { delay: 1000 * DELAY_SECONDS } )
 	},

@@ -1,4 +1,4 @@
-// import './wikiactivity'
+import './wikiactivity'
 import { env, io, listeners, pino, server } from './lib'
 
 ( async () => {
