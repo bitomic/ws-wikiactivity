@@ -16,19 +16,23 @@ new Worker(
 		const { lastCheck } = job.data
 
 		const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
-		pino.info( `Running for the following wikis with last check ${ new Date( lastCheck ).toISOString() }: ${ rooms.join( ', ' ) }` )
-		const fandom = new Fandom()
-		for ( const room of rooms ) {
-			try {
-				const wiki = await fandom.getWiki( room ).load()
-				const activity = await getActivity( wiki, lastCheck, now )
-				for ( const item of activity ) {
-					io.to( room ).emit( 'activity', item )
-					await sleep( 200 )
+		if ( rooms.length > 0 ) {
+			pino.info( `Running for the following wikis with last check ${ new Date( lastCheck ).toISOString() }: ${ rooms.join( ', ' ) }` )
+
+			const fandom = new Fandom()
+			for ( const room of rooms ) {
+				try {
+					const wiki = await fandom.getWiki( room ).load()
+					const activity = await getActivity( wiki, lastCheck, now )
+					for ( const item of activity ) {
+						io.to( room ).emit( 'activity', item )
+						await sleep( 200 )
+					}
+					pino.info( `Emitted ${ activity.length } events.`, { room } )
+				} catch ( e ) {
+					// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+					pino.error( `An error had occurred: ${ e }.`, { room } )
 				}
-				pino.info( `Emitted ${ activity.length } events in room ${ room }.` )
-			} catch ( e ) {
-				pino.error( `An error had occurred while processing room ${ room }.` )
 			}
 		}
 
