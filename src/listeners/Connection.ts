@@ -6,7 +6,7 @@ import type { Socket } from 'socket.io'
 	type: 'server'
 } )
 export class CustomListener extends Listener {
-	public run( socket: Socket ): void {
+	public async run( socket: Socket ): Promise<void> {
 		socket.emit( 'connection' )
 		pino.info( `Connection: ${ socket.id }` )
 
@@ -16,5 +16,8 @@ export class CustomListener extends Listener {
 				await listener.run( socket, ...args )
 			}
 		} )
+
+		await socket.join( '#default' )
+		await socket.leave( socket.id )
 	}
 }
