@@ -7,7 +7,6 @@ import type { Socket } from 'socket.io'
 } )
 export class CustomListener extends Listener {
 	public run( socket: Socket ): void {
-		console.log( 'rooms event' )
 		const rooms = [ ...io.sockets.adapter.rooms.keys() ]
 		socket.emit( 'rooms', rooms )
 	}
