@@ -9,6 +9,7 @@ import type { Socket } from 'socket.io'
 } )
 export class CustomListener extends Listener {
 	public async run( socket: Socket, rooms: string[] ): Promise<void> {
+		if ( !Array.isArray( rooms ) ) return
 		rooms = rooms.filter( room => typeof room === 'string' )
 
 		const validRooms = rooms.filter( room => parseInterwiki( room ) )
