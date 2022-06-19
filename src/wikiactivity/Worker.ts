@@ -17,8 +17,7 @@ new Worker(
 
 		const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
 		if ( rooms.length > 0 ) {
-			pino.info( `Running for the following wikis with last check ${ new Date( lastCheck ).toISOString() }: ${ rooms.join( ', ' ) }` )
-
+			let events = 0
 			const fandom = new Fandom()
 			for ( const room of rooms ) {
 				try {
@@ -28,12 +27,13 @@ new Worker(
 						io.to( room ).emit( 'activity', item )
 						await sleep( 200 )
 					}
-					pino.info( `Emitted ${ activity.length } events.`, { room } )
+					events += activity.length
 				} catch ( e ) {
 					// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 					pino.error( `An error had occurred: ${ e }.`, { room } )
 				}
 			}
+			pino.info( `Emitted ${ events } events.` )
 		}
 
 		await queue.add( 'fetch', { lastCheck: now }, { delay: 1000 * DELAY_SECONDS } )
