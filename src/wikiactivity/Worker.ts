@@ -18,6 +18,7 @@ new Worker(
 		const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
 		if ( rooms.length > 0 ) {
 			let events = 0
+			const updatedRooms = []
 			const fandom = new Fandom()
 			for ( const room of rooms ) {
 				try {
@@ -28,12 +29,16 @@ new Worker(
 						await sleep( 200 )
 					}
 					events += activity.length
+					if ( activity.length > 0 ) updatedRooms.push( room )
 				} catch ( e ) {
 					// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 					pino.error( `An error had occurred: ${ e }.`, { room } )
 				}
 			}
-			if ( events > 0 ) pino.info( `Emitted ${ events } events.` )
+			if ( events > 0 ) {
+				pino.info( `Emitted ${ events } events.` )
+				io.to( updatedRooms ).emit( 'activity-end' )
+			}
 		}
 
 		await queue.add( 'fetch', { lastCheck: now }, { delay: 1000 * DELAY_SECONDS } )
