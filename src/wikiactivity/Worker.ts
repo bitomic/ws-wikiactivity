@@ -25,7 +25,7 @@ new Worker(
 					const wiki = await fandom.getWiki( room ).load()
 					const activity = await getActivity( wiki, lastCheck, now )
 					for ( const item of activity ) {
-						io.to( room ).emit( 'activity', item )
+						io.to( room ).emit( 'activity', { ...item, wiki: room } )
 						await sleep( 200 )
 					}
 					events += activity.length
