@@ -33,7 +33,7 @@ new Worker(
 					pino.error( `An error had occurred: ${ e }.`, { room } )
 				}
 			}
-			pino.info( `Emitted ${ events } events.` )
+			if ( events > 0 ) pino.info( `Emitted ${ events } events.` )
 		}
 
 		await queue.add( 'fetch', { lastCheck: now }, { delay: 1000 * DELAY_SECONDS } )
