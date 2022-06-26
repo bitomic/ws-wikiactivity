@@ -54,7 +54,7 @@ new Worker(
 		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
 		const count = fetchJobs.length
 		if ( count > 0 ) return
-		
+
 		try {
 			await queue.add( 'fetch', { lastCheck: Date.now() - 1000 * 60 * 5 } )
 			pino.info( 'An initial job has been scheduled.' )
