@@ -51,10 +51,12 @@ new Worker(
 	async ( job: Job ) => {
 		if ( job.name !== 'schedule' ) return
 		const jobs = await queue.getJobs()
+		// eslint-disable-next-line no-console
+		console.log( 'jobs', jobs )
 		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
 		const count = fetchJobs.length
 		// eslint-disable-next-line no-console
-		console.log( fetchJobs )
+		console.log( 'fetchJobs', fetchJobs )
 		if ( count > 0 ) return
 
 		try {
