@@ -53,6 +53,8 @@ new Worker(
 		const jobs = await queue.getJobs()
 		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
 		const count = fetchJobs.length
+		// eslint-disable-next-line no-console
+		console.log( fetchJobs )
 		if ( count > 0 ) return
 
 		try {
@@ -70,7 +72,7 @@ void queue.add(
 	{ lastCheck: -1 },
 	{
 		repeat: {
-			every: 1000 * 60 * 10
+			every: 1000 * 60 * 5
 		}
 	}
 )
