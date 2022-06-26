@@ -2,7 +2,7 @@ import { ApplyOptions, Listener, type ListenerOptions, pino } from '../lib'
 import { queue } from '../wikiactivity'
 
 @ApplyOptions<ListenerOptions>( {
-	event: 'rooms',
+	event: 'reset',
 	type: 'client'
 } )
 export class CustomListener extends Listener {
