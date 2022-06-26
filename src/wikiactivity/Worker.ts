@@ -50,6 +50,8 @@ new Worker(
 	QUEUE_NAME,
 	async ( job: Job ) => {
 		if ( job.name !== 'schedule' ) return
+		const activeJob = await queue.getJobs( 'active' )
+		if ( activeJob.length > 0 ) return
 		const jobs = await queue.getJobs( [ 'delayed', 'wait', 'waiting' ] )
 		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
 		const count = fetchJobs.length
