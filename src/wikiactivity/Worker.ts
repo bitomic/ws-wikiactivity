@@ -11,7 +11,6 @@ new Worker(
 	QUEUE_NAME,
 	async ( job: Job<IWikiActivityData, void, string> ) => {
 		if ( job.name !== 'fetch' ) return
-		pino.info( 'Running fetch job.' )
 
 		const now = Date.now()
 		const { lastCheck } = job.data
@@ -43,8 +42,6 @@ new Worker(
 		}
 
 		await queue.add( 'fetch', { lastCheck: now }, { delay: 1000 * DELAY_SECONDS } )
-			.then( () => pino.info( 'Queued next job.' ) )
-			.catch( () => pino.error( 'Couldn\'t queue next job.' ) )
 	},
 	{ connection: redis }
 )
