@@ -50,22 +50,11 @@ new Worker(
 	QUEUE_NAME,
 	async ( job: Job ) => {
 		if ( job.name !== 'schedule' ) return
-		const activeJob = await queue.getJobs( 'active' )
-		if ( activeJob.length > 0 ) return
-		const jobs = await queue.getJobs( [ 'delayed', 'wait', 'waiting' ] )
+		const jobs = await queue.getJobs()
 		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
 		const count = fetchJobs.length
-		if ( count === 1 ) return
-		if ( count > 1 ) {
-			pino.warn( 'There are multiple jobs scheduled. Obliterating...' )
-			for ( const job of fetchJobs ) {
-				if ( !job.id ) {
-					pino.warn( 'Tried to remove a job, but it has no id.' )
-					continue
-				}
-				await queue.remove( job.id )
-			}
-		}
+		if ( count > 0 ) return
+		
 		try {
 			await queue.add( 'fetch', { lastCheck: Date.now() - 1000 * 60 * 5 } )
 			pino.info( 'An initial job has been scheduled.' )
