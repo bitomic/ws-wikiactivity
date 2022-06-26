@@ -70,7 +70,8 @@ new Worker(
 		} catch {
 			pino.warn( 'Couldn\'t set an initial job.' )
 		}
-	}
+	},
+	{ connection: redis }
 )
 
 void queue.add(
