@@ -46,19 +46,43 @@ new Worker(
 	{ connection: redis }
 )
 
-queue.getJobs().then( async jobs => {
-	const count = jobs.filter( i => i.name === 'fetch' ).length
-	if ( count === 1 ) {
-		pino.info( 'A job is already scheduled.' )
-		return
-	} else if ( count > 1 ) {
-		pino.warn( 'There are multiple jobs scheduled. Obliterating...' )
-		await queue.obliterate( { force: true } )
+new Worker(
+	QUEUE_NAME,
+	async ( job: Job ) => {
+		if ( job.name !== 'schedule' ) return
+		const jobs = await queue.getJobs()
+		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
+		const count = fetchJobs.length
+		if ( count === 1 ) return
+		if ( count > 1 ) {
+			pino.warn( 'There are multiple jobs scheduled. Obliterating...' )
+			for ( const job of fetchJobs ) {
+				if ( !job.id ) {
+					pino.warn( 'Tried to remove a job, but it has no id.' )
+					continue
+				}
+				await queue.remove( job.id )
+			}
+		}
+		try {
+			await queue.add( 'fetch', { lastCheck: Date.now() - 1000 * 60 * 5 } )
+			pino.info( 'An initial job has been scheduled.' )
+		} catch {
+			pino.warn( 'Couldn\'t set an initial job.' )
+		}
 	}
+)
 
-	await queue.add( 'fetch', { lastCheck: Date.now() - 1000 * 60 * 5 } )
-	pino.info( 'An initial job has been scheduled.' )
-} )
+void queue.add(
+	'schedule',
+	{ lastCheck: -1 },
+	{
+		repeat: {
+			every: 1000 * 60 * 10
+		}
+	}
+)
 	.catch( e => {
-		pino.error( 'Couldn\'t set the initial job.', e )
+		pino.error( 'Couldn\'t register a "schedule" task.' )
+		pino.error( e )
 	} )
