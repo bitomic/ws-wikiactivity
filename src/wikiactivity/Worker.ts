@@ -11,6 +11,7 @@ new Worker(
 	QUEUE_NAME,
 	async ( job: Job<IWikiActivityData, void, string> ) => {
 		if ( job.name !== 'fetch' ) return
+		pino.info( 'Running fetch job.' )
 
 		const now = Date.now()
 		const { lastCheck } = job.data
