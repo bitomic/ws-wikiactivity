@@ -48,36 +48,3 @@ new Worker(
 	},
 	{ connection: redis }
 )
-
-new Worker(
-	QUEUE_NAME,
-	async ( job: Job ) => {
-		if ( job.name !== 'schedule' ) return
-		const jobs = await queue.getJobs()
-		const fetchJobs = jobs.filter( i => i.name === 'fetch' )
-		const count = fetchJobs.length
-		if ( count > 0 ) return
-
-		try {
-			await queue.add( 'fetch', { lastCheck: Date.now() - 1000 * 60 * 5 } )
-			pino.info( 'An initial job has been scheduled.' )
-		} catch {
-			pino.warn( 'Couldn\'t set an initial job.' )
-		}
-	},
-	{ connection: redis }
-)
-
-void queue.add(
-	'schedule',
-	{ lastCheck: -1 },
-	{
-		repeat: {
-			every: 1000 * 60 * 5
-		}
-	}
-)
-	.catch( e => {
-		pino.error( 'Couldn\'t register a "schedule" task.' )
-		pino.error( e )
-	} )
