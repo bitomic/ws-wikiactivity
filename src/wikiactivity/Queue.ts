@@ -1,13 +1,9 @@
 import { Queue, QueueEvents, QueueScheduler } from 'bullmq'
 import { redis } from '../lib'
 
-export interface IWikiActivityData {
-	lastCheck: number
-}
-
 export const QUEUE_NAME = 'wikiactivity'
 
-export const queue = new Queue<IWikiActivityData, void, string>( QUEUE_NAME, {
+export const queue = new Queue<null, void, string>( QUEUE_NAME, {
 	connection: redis,
 	defaultJobOptions: {
 		attempts: 3,

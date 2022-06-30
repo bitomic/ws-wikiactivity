@@ -1,19 +1,19 @@
 import { io, pino, redis } from '../lib'
-import { type IWikiActivityData, queue, QUEUE_NAME } from './Queue'
 import { type Job, Worker } from 'bullmq'
+import { queue, QUEUE_NAME } from './Queue'
 import { Fandom } from 'mw.js'
 import { getActivity } from '../wiki/get-activity'
 import { sleep } from '@bitomic/utilities'
 
 const DELAY_SECONDS = 20
+let lastCheck = Date.now() - 1000 * 60 * 5
 
 new Worker(
 	QUEUE_NAME,
-	async ( job: Job<IWikiActivityData, void, string> ) => {
+	async ( job: Job<null, void, string> ) => {
 		if ( job.name !== 'fetch' ) return
 
 		const now = Date.now()
-		const { lastCheck } = job.data
 
 		const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
 		if ( rooms.length > 0 ) {
@@ -41,7 +41,17 @@ new Worker(
 			}
 		}
 
-		await queue.add( 'fetch', { lastCheck: now }, { delay: 1000 * DELAY_SECONDS } )
+		lastCheck = now
 	},
 	{ connection: redis }
+)
+
+void queue.add(
+	'fetch',
+	null,
+	{
+		repeat: {
+			every: 1000 * DELAY_SECONDS
+		}
+	}
 )
