@@ -10,10 +10,6 @@ export const queue = new Queue<null, void, string>( QUEUE_NAME, {
 		backoff: {
 			delay: 1000,
 			type: 'exponential'
-		},
-		removeOnComplete: {
-			age: 60 * 60 * 24 * 15, // 15 days
-			count: 30
 		}
 	}
 } )
