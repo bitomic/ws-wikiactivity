@@ -5,11 +5,5 @@ export const env = load( {
 		'development' as const,
 		'production' as const
 	],
-	PORT: Number,
-	REDIS_HOST: String,
-	REDIS_PASS: String,
-	REDIS_PORT: {
-		default: 6379,
-		type: Number
-	}
+	PORT: Number
 } )
