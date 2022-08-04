@@ -46,14 +46,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bitomic/wikiactivity-api@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@bitomic/wikiactivity-api@npm:1.1.0"
+"@bitomic/wikiactivity-api@npm:1.1.1":
+  version: 1.1.1
+  resolution: "@bitomic/wikiactivity-api@npm:1.1.1"
   dependencies:
     mw.js: ^2.4.1
     ts-dotenv: ^0.8.3
     undici: ^5.8.1
-  checksum: a3ded267f46277960d4a12ccbbde3c9a14d74bcbadb6a0a54ecfd09591d89975b51e3e4566ae2eeb0767984c90248b05d5c86a932731561deee24d22e9648bd7
+  checksum: 171273072d929aa6cd2efc950f7fb301cb8d1d03e1f4a786cdb496fd16cb8e010c5d6406cbc29de2522a7bf64ea8a3b4791811610685c67d27bca56e40789cd0
   languageName: node
   linkType: hard
 
@@ -3839,7 +3839,7 @@ __metadata:
   dependencies:
     "@bitomic/eslint-config": ^1.0.0
     "@bitomic/utilities": ^1.0.0
-    "@bitomic/wikiactivity-api": 1.1.0
+    "@bitomic/wikiactivity-api": 1.1.1
     "@commitlint/cli": ^17.0.3
     "@commitlint/config-conventional": ^17.0.3
     "@sapphire/async-queue": ^1.3.2
