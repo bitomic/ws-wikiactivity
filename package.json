@@ -36,7 +36,7 @@
     "colorette": "^2.0.19",
     "mw.js": "^2.4.1",
     "node-cron": "^3.0.1",
-    "pino": "^8.3.1",
+    "pino": "^8.4.0",
     "pino-pretty": "^8.1.0",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1",
