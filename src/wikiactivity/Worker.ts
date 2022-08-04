@@ -1,15 +1,15 @@
 import { io, pino } from '../lib'
 import cron from 'node-cron'
 import { Fandom } from 'mw.js'
-import { getActivity } from '../wiki/get-activity'
+import { getActivity } from '@bitomic/wikiactivity-api'
 import { sleep } from '@bitomic/utilities'
 
-let LAST_CHECK = Date.now() - 1000 * 60 * 5
+let LAST_CHECK = new Date( Date.now() - 1000 * 60 * 5 )
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 cron.schedule( '*/20 * * * * *', async () => {
 	try {
-		const now = Date.now()
+		const now = new Date()
 		const lastCheck = LAST_CHECK
 		LAST_CHECK = now
 

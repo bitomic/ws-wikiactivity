@@ -1,5 +1,5 @@
 import { ApplyOptions, Listener, type ListenerOptions } from '../lib'
-import { parseInterwiki } from '../wiki'
+import { Fandom } from 'mw.js'
 import type { Socket } from 'socket.io'
 
 @ApplyOptions<ListenerOptions>( {
@@ -11,7 +11,14 @@ export class CustomListener extends Listener {
 		if ( !Array.isArray( rooms ) ) return
 		rooms = rooms.filter( room => typeof room === 'string' )
 
-		const validRooms = rooms.filter( room => parseInterwiki( room ) )
+		const validRooms = rooms.filter( room => {
+			try {
+				Fandom.interwiki2api( room )
+				return true
+			} catch {
+				return false
+			}
+		} )
 		for ( const room of validRooms ) {
 			await socket.leave( room )
 		}
