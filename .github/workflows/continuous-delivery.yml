@@ -52,7 +52,7 @@ jobs:
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
       
       - name: Build and push Docker image
-        uses: docker/build-push-action@1cb9d22b932e4832bb29793b7777ec860fc1cde0 # tag=v3.1.0
+        uses: docker/build-push-action@c84f38281176d4c9cdb1626ffafcd6b3911b5d94 # tag=v3.1.1
         with:
           context: .
           push: true
