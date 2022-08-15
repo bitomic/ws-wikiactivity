@@ -2425,10 +2425,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cron@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "node-cron@npm:3.0.1"
-  checksum: 98636a3d4373d48b5c7f5b922c93d22ca81a4bd38284f264812c7b88f06c995eb9ccde34ee2753cbec9bf5b77bd220c817c18ca82de504e3e324df9af6983b5d
+"node-cron@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "node-cron@npm:3.0.2"
+  dependencies:
+    uuid: 8.3.2
+  checksum: dd21585c0d4069a0752022dad9b8380a4393c4783ec78355ffa99ff32b018c3743a35d4ebf9d7c7863949e94e302b440f58c884eb4960e71c7260d817e2d3f25
   languageName: node
   linkType: hard
 
@@ -3657,7 +3659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.2":
+"uuid@npm:8.3.2, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
@@ -3861,7 +3863,7 @@ __metadata:
     husky: ^8.0.1
     lint-staged: ^13.0.3
     mw.js: ^2.4.1
-    node-cron: ^3.0.1
+    node-cron: ^3.0.2
     pino: ^8.4.1
     pino-pretty: ^8.1.0
     rimraf: ^3.0.2
