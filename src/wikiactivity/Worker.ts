@@ -32,8 +32,10 @@ new Worker(
 							await sleep( 200 )
 						}
 						events += activity.length
-						if ( activity.length > 0 ) updatedRooms.push( room )
-						pino.info( `Emitted ${ activity.length } events for ${ room }` )
+						if ( activity.length > 0 ) {
+							updatedRooms.push( room )
+							pino.info( `Emitted ${ activity.length } events for ${ room }` )
+						}
 					} catch ( e ) {
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						pino.error( `An error had occurred: ${ e }.`, { room } )
