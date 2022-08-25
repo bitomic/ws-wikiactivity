@@ -17,6 +17,7 @@ new Worker(
 			const lastCheck = LAST_CHECK
 			LAST_CHECK = now
 
+			pino.info( `Running from ${ lastCheck.toISOString() } to ${ now.toISOString() }` )
 			const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
 			if ( rooms.length > 0 ) {
 				let events = 0
@@ -32,13 +33,14 @@ new Worker(
 						}
 						events += activity.length
 						if ( activity.length > 0 ) updatedRooms.push( room )
+						pino.info( `Emitted ${ activity.length } events for ${ room }` )
 					} catch ( e ) {
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						pino.error( `An error had occurred: ${ e }.`, { room } )
 					}
 				}
 				if ( events > 0 ) {
-					pino.info( `Emitted ${ events } events.` )
+					pino.info( `Emitted ${ events } total events.` )
 					io.to( updatedRooms ).emit( 'activity-end' )
 				}
 			}
