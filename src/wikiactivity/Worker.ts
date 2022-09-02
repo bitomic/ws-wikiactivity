@@ -51,7 +51,7 @@ new Worker(
 			pino.error( e )
 		}
 
-		void queue.add( 'fetch', null, { jobId: 'fetch' } )
+		void queue.add( 'fetch', null, { delay: 1000 * 20, jobId: 'fetch' } )
 	},
 	{ connection: redis }
 )
