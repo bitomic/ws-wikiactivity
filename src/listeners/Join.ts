@@ -1,4 +1,4 @@
-import { ApplyOptions, io, Listener, type ListenerOptions, pino } from '../lib'
+import { ApplyOptions, io, Listener, type ListenerOptions, logger } from '../lib'
 import { Fandom } from 'mw.js'
 import type { Socket } from 'socket.io'
 
@@ -29,7 +29,7 @@ export class CustomListener extends Listener {
 			const exists = await Fandom.getWiki( room ).exists()
 				.catch( () => false )
 			if ( !exists ) {
-				pino.warn( `Tried to create a room for an unreachable wiki: ${ room }` )
+				logger.warn( `Tried to create a room for an unreachable wiki: ${ room }` )
 				socket.emit( 'unreachable-wiki', room )
 				invalidRooms.add( room )
 			}
@@ -37,7 +37,7 @@ export class CustomListener extends Listener {
 
 		if ( missingRooms.size > invalidRooms.size ) {
 			const newRooms = [ ...missingRooms ].filter( room => !invalidRooms.has( room ) )
-			pino.info( `The following rooms will be created: ${ newRooms.join( ', ' ) }` )
+			logger.info( `The following rooms will be created: ${ newRooms.join( ', ' ) }` )
 		}
 
 		const joinableRooms = validRooms.filter( room => !invalidRooms.has( room ) )
