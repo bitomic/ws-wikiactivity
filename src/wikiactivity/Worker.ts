@@ -51,11 +51,12 @@ new Worker(
 			logger.error( e )
 		}
 
-		void queue.add( 'fetch', null, { delay: 1000 * 20, jobId: 'fetch' } )
+		void queue.add( 'fetch', null, { delay: 1000 * 20 } )
 	},
 	{ connection: redis }
 )
 
 queue.obliterate( { force: true } )
-	.then( () => void queue.add( 'fetch', null, { jobId: 'fetch' } ) )
+	.then( () => void queue.add( 'fetch', null ) )
+	.then( () => logger.info( 'Registered initial job.' ) )
 	.catch( logger.error )
