@@ -56,4 +56,6 @@ new Worker(
 	{ connection: redis }
 )
 
-void queue.add( 'fetch', null, { jobId: 'fetch' } )
+queue.obliterate( { force: true } )
+	.then( () => void queue.add( 'fetch', null, { jobId: 'fetch' } ) )
+	.catch( logger.error )
