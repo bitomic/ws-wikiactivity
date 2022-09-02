@@ -50,16 +50,8 @@ new Worker(
 			pino.error( 'An unexpected error had occurred.' )
 			pino.error( e )
 		}
+
+		void queue.add( 'fetch', null, { jobId: 'fetch' } )
 	},
 	{ connection: redis }
-)
-
-void queue.add(
-	'fetch',
-	null,
-	{
-		repeat: {
-			every: 1000 * 20
-		}
-	}
 )
