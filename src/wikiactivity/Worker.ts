@@ -55,3 +55,5 @@ new Worker(
 	},
 	{ connection: redis }
 )
+
+void queue.add( 'fetch', null, { jobId: 'fetch' } )
