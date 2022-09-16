@@ -5,7 +5,7 @@ import type { Socket } from 'socket.io'
 @ApplyOptions<ListenerOptions>( {
 	event: 'join',
 	type: 'client'
-} )
+	} )
 export class CustomListener extends Listener {
 	public async run( socket: Socket, rooms: string[] ): Promise<void> {
 		if ( !Array.isArray( rooms ) ) return

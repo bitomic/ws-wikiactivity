@@ -4,7 +4,7 @@ import type { Socket } from 'socket.io'
 @ApplyOptions<ListenerOptions>( {
 	event: 'rooms',
 	type: 'client'
-} )
+	} )
 export class CustomListener extends Listener {
 	public run( socket: Socket ): void {
 		const rooms = [ ...io.sockets.adapter.rooms.keys() ]
