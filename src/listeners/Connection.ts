@@ -4,7 +4,7 @@ import type { Socket } from 'socket.io'
 @ApplyOptions<ListenerOptions>( {
 	event: 'connection',
 	type: 'server'
-	} )
+} )
 export class CustomListener extends Listener {
 	public async run( socket: Socket ): Promise<void> {
 		socket.emit( 'connection' )
