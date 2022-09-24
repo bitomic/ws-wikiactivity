@@ -15,7 +15,7 @@ new Worker(
 		try {
 			const now = new Date()
 			const lastCheck = LAST_CHECK
-			LAST_CHECK = now + 1000
+			LAST_CHECK = new Date( now.getTime() + 1000 )
 
 			logger.info( `Running from ${ lastCheck.toISOString() } to ${ now.toISOString() }` )
 			const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
