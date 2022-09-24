@@ -1,4 +1,4 @@
-import { Queue, QueueEvents, QueueScheduler } from 'bullmq'
+import { Queue, QueueEvents } from 'bullmq'
 import { redis } from '../lib'
 
 export const QUEUE_NAME = 'wikiactivity'
@@ -14,7 +14,5 @@ export const queue = new Queue<null, void, string>( QUEUE_NAME, {
 		removeOnComplete: true
 	}
 } )
-
-export const scheduler = new QueueScheduler( QUEUE_NAME, { connection: redis } )
 
 export const events = new QueueEvents( QUEUE_NAME, { connection: redis } )
