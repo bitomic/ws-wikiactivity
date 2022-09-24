@@ -34,7 +34,7 @@
     "@sapphire/async-queue": "^1.5.0",
     "@sapphire/pieces": "^3.5.1",
     "@sapphire/utilities": "^3.9.3",
-    "bullmq": "^1.91.1",
+    "bullmq": "^2.1.0",
     "ioredis": "5.2.2",
     "mw.js": "^2.4.1",
     "socket.io": "^4.5.2",
