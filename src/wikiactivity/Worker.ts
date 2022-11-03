@@ -1,8 +1,8 @@
+import { createActivityItem, getActivity } from '@bitomic/wikiactivity-api'
 import { io, logger, redis } from '../lib'
 import { type Job, Worker } from 'bullmq'
 import { queue, QUEUE_NAME } from './Queue'
 import { Fandom } from 'mw.js'
-import { getActivity } from '@bitomic/wikiactivity-api'
 import { sleep } from '@bitomic/utilities'
 
 let LAST_CHECK = new Date( Date.now() - 1000 * 60 * 5 )
@@ -12,12 +12,12 @@ new Worker(
 	QUEUE_NAME,
 	async ( job: Job<null, void, string> ) => {
 		if ( job.name !== 'fetch' ) return
-		try {
-			const now = new Date()
-			const lastCheck = LAST_CHECK
-			LAST_CHECK = new Date( now.getTime() + 1000 )
 
-			logger.info( `Running from ${ lastCheck.toISOString() } to ${ now.toISOString() }` )
+		const now = new Date()
+		const lastCheck = new Date( LAST_CHECK.getTime() - 1000 * 5 ) // 5 seconds ago
+		const lastCheckTime = LAST_CHECK.getTime()
+
+		try {
 			const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
 			if ( rooms.length > 0 ) {
 				let events = 0
@@ -28,6 +28,11 @@ new Worker(
 						const wiki = await fandom.getWiki( room ).load()
 						const activity = await getActivity( wiki, lastCheck, now )
 						for ( const item of activity ) {
+							const activityItem = createActivityItem( item )
+							if ( activityItem.isDiscussions() && activityItem.creationDate.epochSecond <= lastCheckTime
+								|| ( activityItem.isLogEvents() || activityItem.isRecentChanges() ) && new Date( activityItem.timestamp ).getTime() <= lastCheckTime  ) {
+								continue
+							}
 							io.to( room ).emit( 'activity', { ...item, wiki: room } )
 							await sleep( 200 )
 						}
@@ -52,6 +57,7 @@ new Worker(
 		}
 
 		void queue.add( 'fetch', null, { delay: 1000 * 20 } )
+		LAST_CHECK = new Date( now.getTime() + 1000 )
 	},
 	{ connection: redis }
 )
