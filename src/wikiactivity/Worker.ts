@@ -57,7 +57,7 @@ new Worker(
 		}
 
 		void queue.add( 'fetch', null, { delay: 1000 * 20 } )
-		LAST_CHECK = new Date( now.getTime() + 1000 )
+		LAST_CHECK = now
 	},
 	{ connection: redis }
 )
