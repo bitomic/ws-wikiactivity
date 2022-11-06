@@ -11,7 +11,7 @@
     "build:watch": "yarn tsc -w --incremental",
     "lint": "eslint src/ --ext .ts --cache",
     "lint:fix": "eslint src/ --fix --ext .ts --cache",
-    "start": "yarn node dist/main.js"
+    "start": "yarn node --enable-source-maps dist/main.js"
   },
   "packageManager": "yarn@3.2.4",
   "devDependencies": {
