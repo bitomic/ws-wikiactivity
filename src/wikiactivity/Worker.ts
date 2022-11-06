@@ -17,6 +17,8 @@ new Worker(
 		const lastCheck = new Date( LAST_CHECK.getTime() - 1000 * 5 ) // 5 seconds ago
 		const lastCheckTime = LAST_CHECK.getTime()
 
+		logger.debug( `Running from "${ lastCheck.toISOString() }" to "${ now.toISOString() }"` )
+
 		try {
 			const rooms = [ ...io.sockets.adapter.rooms.keys() ].filter( i => i !== '#default' )
 			if ( rooms.length > 0 ) {
@@ -27,6 +29,11 @@ new Worker(
 					try {
 						const wiki = await fandom.getWiki( room ).load()
 						const activity = await getActivity( wiki, lastCheck, now )
+							.catch(e => {
+								logger.error( `There was an error while trying to fetch ${ room }` )
+								logger.error( e )
+								return []
+							})
 						for ( const item of activity ) {
 							const activityItem = createActivityItem( item )
 							if ( activityItem.isDiscussions() && activityItem.creationDate.epochSecond <= lastCheckTime
