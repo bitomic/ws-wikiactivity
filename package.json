@@ -32,7 +32,7 @@
     "@bitomic/utilities": "^1.0.0",
     "@bitomic/wikiactivity-api": "1.2.0",
     "@sapphire/async-queue": "^1.5.0",
-    "@sapphire/pieces": "^3.5.2",
+    "@sapphire/pieces": "^3.6.0",
     "@sapphire/utilities": "^3.11.0",
     "bullmq": "^2.4.0",
     "ioredis": "5.2.2",
