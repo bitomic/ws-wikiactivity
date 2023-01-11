@@ -40,7 +40,7 @@
     "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
     "ts-dotenv": "^0.9.0",
-    "undici": "^5.14.0"
+    "undici": "^5.15.0"
   },
   "publishConfig": {
     "access": "public"
